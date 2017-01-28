@@ -1,5 +1,20 @@
 <template>
   <div class="search-container" >
+    <div class="item-detail" v-if="selectedItem">
+      <h4>Download Item</h4>
+      <i @click.stop ="selectedItem = null">X</i>
+      <p>
+      <span>Title : {{ selectedItem.metadata.title[0] }}</span>
+      <span>Uploaded: {{ selectedItem.metadata.publicdate[0] }}</span>
+      </p>
+      <ul class="download-list">
+        <li v-for="(file, name) in selectedItem.files">
+          <p >
+            Download {{ file.format }} <button @click.stop="download(name)">Download</button>
+          </p>
+        </li>
+      </ul>
+    </div>
     <div class="loading" v-if="loading">Waiting ...</div>
     <input type="text" placeholder="Search" @keyup.enter="onSearch" v-model="searchValue">
     <button>Search</button>
@@ -17,6 +32,7 @@
         </p>
       </li>
     </ul>
+
   </div>
 </template>
 
@@ -29,6 +45,7 @@ export default {
       page: 0,
       searchResult: [],
       loading: false,
+      selectedItem: null,
     };
   },
   methods: {
@@ -41,12 +58,19 @@ export default {
         this.loading = false;
       });
     },
-    substring(text,ammount) {
-      return `${text.substring(ammount)} ...`
-    },
     onItemClick(id) {
       this.loading = true;
-      console.log('id mih', id);
+      const detailUrl = `http://archive.org/details/${id}/?output=json`;
+      this.$http.jsonp(detailUrl, {jsonp: ''}).then((response) => {
+        this.loading = false;
+        this.downloadModal = true;
+        this.selectedItem = response.body;
+      });
+    },
+    download(identifier) {
+      const url = `http://archive.org/download/${this.selectedItem.metadata.identifier[0]}/${identifier}`;
+      console.log(url);
+      window.location.href = url;
     }
   },
 };
@@ -65,11 +89,13 @@ export default {
   }
   .search-container {
     background: white;
-    width: 800px;
+    width: 85%;
     margin: 0 auto;
+    padding: 0 5%;
+    box-sizing: border-box;
     
     input[type="text"] {
-      width: 650px;
+      width: 85%;
       height: 45px;
       margin: 20px auto;
       padding: 0 20px;
@@ -116,6 +142,24 @@ export default {
       }
     }
     
+    .download-list {
+      position: relative;
+      overflow: auto;
+      
+      p{
+        margin-top: 50px;
+        button {
+          font-size:0.8em;
+          padding: 2px 3px;
+          height: 30px; width: 80px;
+          float: right;
+          position: relative;
+          top: -30px;
+          clear:right;
+        }
+      }
+    }
+       
     .search-result {
       display: block;
       width: 100%;
@@ -127,7 +171,6 @@ export default {
       border: 1px solid #aaa;
       border-radius: 5px;
       box-sizing: border-box;
-      
       li {
         display: block;
         padding: 50px 30px;
@@ -157,6 +200,46 @@ export default {
           line-height: 22px;
         }
       }
+    }
+  }
+  
+  .item-detail {
+    position: fixed;
+    width: 85%;
+    height: 50vh;
+    box-sizing: border-box;
+    background-color: #fff;
+    padding: 10px 40px;
+    border: 2px solid rgba(210,210,210, .8);
+    left: 50%;
+    margin-left: -42.5%;
+    color: #000;
+    z-index: 100000;
+    
+    i {
+      display: block;
+      position: absolute;
+      top: 10px; right: 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+      z-index: 100000;
+    }
+    
+    h4 {
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+    
+    p {
+      text-align: left;
+    }
+    
+    li{
+      margin-top: 15px;
+    }
+    .download-list {
+      height: 200px;
+      overflow-y: scroll;
     }
   }
 </style>

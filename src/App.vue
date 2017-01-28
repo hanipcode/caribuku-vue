@@ -5,7 +5,7 @@
     </h1>
     
     <p>
-      <span> Learning project by hanipcode me@muhanif.id developed using vue js</span>
+      <span> Learning project by <a href="http://github.com/hanipcode">hanipcode</a>(h@muhanif.id) developed using vue js</span>
       <span> 
         You can view or download the project repository
         <a href="http://github.com/hanipcode/caribuku-vue">here</a>
