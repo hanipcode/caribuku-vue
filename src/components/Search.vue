@@ -17,9 +17,9 @@
     </div>
     <div class="loading" v-if="loading">Waiting ...</div>
     <input type="text" placeholder="Search" @keyup.enter="onSearch" v-model="searchValue">
-    <button>Search</button>
-    
-    <ul class="search-result" v-if="searchResult.length > 0"> 
+    <button @click="onSearch">Search</button>
+
+    <ul class="search-result" v-if="searchResult.length > 0">
       <li v-for="result in searchResult" @click.stop="onItemClick(result.identifier)">
         <h3>{{ result.title }}</h3>
         <h5>
@@ -93,27 +93,27 @@ export default {
     margin: 0 auto;
     padding: 0 5%;
     box-sizing: border-box;
-    
+
     input[type="text"] {
       width: 85%;
       height: 45px;
       margin: 20px auto;
       padding: 0 20px;
-      box-sizing: border-box;      
+      box-sizing: border-box;
       font-size: 1.1em;
       line-height: 20px;
       color: #bbb;
       border: 2px solid #bbb;
       border-radius: 5px;
       float: left;
-      
+
       &:focus {
-        color: #555;  
+        color: #555;
         outline: none;
         border-color: #999;
       }
     }
-      
+
     button {
       border: 0;
       background-color: #3498db;
@@ -128,7 +128,7 @@ export default {
       color: #fff;
       border-radius: 2px;
       cursor: pointer;
-      
+
       &:hover {
         background: darken(#3498db, 7%);
       }
@@ -141,11 +141,11 @@ export default {
         clear: both;
       }
     }
-    
+
     .download-list {
       position: relative;
       overflow: auto;
-      
+
       p{
         margin-top: 50px;
         button {
@@ -159,7 +159,7 @@ export default {
         }
       }
     }
-       
+
     .search-result {
       display: block;
       width: 100%;
@@ -176,11 +176,11 @@ export default {
         padding: 50px 30px;
         border-bottom: 1px solid #ddd;
         cursor: pointer;
-        
+
         &:hover {
           background: darken(#fff,1%);
         }
-        
+
         h3 {
           font-size: 1.5em;
           font-weight: bold;
@@ -188,13 +188,13 @@ export default {
         h5 {
           color: #bbb;
           margin: 10px 0px;
-          
+
           span {
             margin-right: 20px;
             font-size: 0.95em;
           }
         }
-        
+
         p {
           font-size: 0.9em;
           line-height: 22px;
@@ -202,7 +202,7 @@ export default {
       }
     }
   }
-  
+
   .item-detail {
     position: fixed;
     width: 85%;
@@ -215,7 +215,7 @@ export default {
     margin-left: -42.5%;
     color: #000;
     z-index: 100000;
-    
+
     i {
       display: block;
       position: absolute;
@@ -224,16 +224,16 @@ export default {
       cursor: pointer;
       z-index: 100000;
     }
-    
+
     h4 {
       font-size: 1.4em;
       font-weight: bold;
     }
-    
+
     p {
       text-align: left;
     }
-    
+
     li{
       margin-top: 15px;
     }
